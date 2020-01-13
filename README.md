@@ -1,1 +1,2 @@
-# paintjs
+# paintjsㅡ
+Made by: vanilla JS
