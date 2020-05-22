@@ -4,6 +4,7 @@ const colors = document.getElementsByClassName("jsColor");
 const range = document.getElementById("jsRange");
 const mode = document.getElementById("jsMode");
 const saveBtn = document.getElementById("jsSave");
+const clearBtn = document.getElementById("jsClear");
 
 const INITIAL_COLOR = "#2c2c2c";
 const CANVAS_SIZE = 700;
@@ -25,7 +26,7 @@ function stopPainting() {
     painting = false;
 }
 
-function startPainting(){
+function startPainting() {
     painting = true;
 }
 
@@ -33,34 +34,34 @@ function startPainting(){
 function onMouseMove(event) {
     const x = event.offsetX;
     const y = event.offsetY;
-    if(!painting){
+    if (!painting) {
         ctx.beginPath();
         ctx.moveTo(x, y);
     } else {
         ctx.lineTo(x, y);
         ctx.stroke();
     }
-    
+
 }
 
-function onMouseUp(event){
+function onMouseUp(event) {
     stopPainting();
 
 }
 
-function handleColorClick(event){
- const color = event.target.style.backgroundColor;
- ctx.strokeStyle = color;
- ctx.fillStyle = color;
+function handleColorClick(event) {
+    const color = event.target.style.backgroundColor;
+    ctx.strokeStyle = color;
+    ctx.fillStyle = color;
 }
 
-function handleRangeChange(event){
+function handleRangeChange(event) {
     const size = event.target.value;
     ctx.lineWidth = size;
 }
 
-function handleModeClick(){
-    if(filling === true){
+function handleModeClick() {
+    if (filling === true) {
         filling = false;
         mode.innerText = "Fill";
     }
@@ -70,44 +71,56 @@ function handleModeClick(){
     }
 }
 
-function handleCanvasClick(){
-   if(filling){
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-}
+function handleCanvasClick() {
+    if (filling) {
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
 }
 
-function handleCM(event){
+
+function handleCM(event) {
     event.preventDefault();
 }
 
-function handleSaveClick(){
+function handleSaveClick() {
     const image = canvas.toDataURL("image/png");
     const link = document.createElement("a");
     link.href = image;
     link.download = "PaintJS[EXPORT]";
     link.click();
 }
-if(canvas){
+
+function handleClearClick() {
+    location.reload();
+    console.log("a")
+}
+
+if (canvas) {
     canvas.addEventListener("mousemove", onMouseMove);
     canvas.addEventListener("mousedown", startPainting);
     canvas.addEventListener("mouseup", onMouseUp);
     canvas.addEventListener("mouseleave", stopPainting);
     canvas.addEventListener("click", handleCanvasClick);
     canvas.addEventListener("contextmenu", handleCM);
+    canvas.addEventListener("clear", handleClearClick);
 }
 
 Array.from(colors).forEach(color =>
     color.addEventListener("click", handleColorClick)
-    );
+);
 
-    if(range){
-        range.addEventListener("input", handleRangeChange);
-    }
+if (range) {
+    range.addEventListener("input", handleRangeChange);
+}
 
-    if(mode){
-        mode.addEventListener("click", handleModeClick);
-    }
+if (mode) {
+    mode.addEventListener("click", handleModeClick);
+}
 
-    if(saveBtn){
-        saveBtn.addEventListener("click", handleSaveClick);
-    }
+if (saveBtn) {
+    saveBtn.addEventListener("click", handleSaveClick);
+}
+
+if (clearBtn) {
+    clearBtn.addEventListener("click", handleClearClick);
+}
